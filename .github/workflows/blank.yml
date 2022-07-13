@@ -14,7 +14,7 @@ on:
 jobs:
   # This workflow contains a single job called "comment"
   comment:
-    if: ${{ github.base_ref == 'main' || github.base_ref == 'master' || github.base_ref == 'field' }}
+    if: ${{ (github.base_ref == 'main' && github.head_ref != 'field') || (github.base_ref == 'field' && github.head_ref != 'develop') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/github-script@v5
@@ -25,5 +25,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'WARNING: PR Base is on an invalid branch'
+              body: 'WARNING: PR Base is on an incorrect branch'
             })
